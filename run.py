@@ -23,7 +23,8 @@ def load_strategies(path):
 			if name[0] == "." or split[1] != ".py":
 				pass
 			else:
-				strategies.update({name: __import__(name).move})
+				module = __import__(name)
+                                strategies.update({name: getattr(module,name)()})
 	return strategies 
 
 def prepare_parser(parser):

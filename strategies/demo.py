@@ -30,30 +30,31 @@
 # history[-1][1] gives our opponent's move in the last round that has been played.
 #
 # Now take a look at a very basic structure of the function move
-def move(game, player, history):
-	# if history is empty, we are in the very first round. Let's cooperate!
-	if not history: 
-		return "a"
-	else: # if we have a history, decide what to do based on which game we are playing:
-		if game == "prison":
-			# play some prisoners dilemma strategy...
-			return "a"
-		elif game == "staghunt": # elif is short for "else, if..."
-			# play some staghung strategy...
-			return "a"
-		elif game == "chicken":
-			# play some chicken strategy...
-			return "a"
-		elif game == "pennies":
-			if player == 1: # when playing matching pennies, player number (1 = row, 2 = column) matters:
-				if history[-1][1] == "a": # if I am player one, I want matching choices
-					return "a" # let's mirror what the other has done in his last round
-				else:
-					return "b"
-			else: # if I am not player 1, I must be player 2, so i don't want matching choices:
-				if history[-1][1] == "a":
-					return "b" # let's do the opposite of what the other did last round.
-				else:
-					return "a"
+class demo:
+    def move(self, game, player, history):
+            # if history is empty, we are in the very first round. Let's cooperate!
+            if not history: 
+                    return "a"
+            else: # if we have a history, decide what to do based on which game we are playing:
+                    if game == "prison":
+                            # play some prisoners dilemma strategy...
+                            return "a"
+                    elif game == "staghunt": # elif is short for "else, if..."
+                            # play some staghung strategy...
+                            return "a"
+                    elif game == "chicken":
+                            # play some chicken strategy...
+                            return "a"
+                    elif game == "pennies":
+                            if player == 1: # when playing matching pennies, player number (1 = row, 2 = column) matters:
+                                    if history[-1][1] == "a": # if I am player one, I want matching choices
+                                            return "a" # let's mirror what the other has done in his last round
+                                    else:
+                                            return "b"
+                            else: # if I am not player 1, I must be player 2, so i don't want matching choices:
+                                    if history[-1][1] == "a":
+                                            return "b" # let's do the opposite of what the other did last round.
+                                    else:
+                                            return "a"
 
 

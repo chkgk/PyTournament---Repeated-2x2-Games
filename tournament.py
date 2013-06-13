@@ -28,13 +28,13 @@ def play_round(game, historyA, historyB, stratA, stratB):
 	PLAYER_2 = 1
 	
 	try:
-		a = stratA(game, PLAYER_1, historyA)
+		a = stratA.move(game, PLAYER_1, historyA)
 	except Exception as e:
 		me = MoveException(1)
 		me.exception = e
 		raise me
 	try:
-		b = stratB(game, PLAYER_2, historyB)
+		b = stratB.move(game, PLAYER_2, historyB)
 	except Exception as e:
 		me = MoveException(2)
 		me.exception = e
@@ -95,6 +95,8 @@ def play_game(game, rounds, stratA, stratB):
 #
 def play_repeatedly(game, times, rounds, stratA, stratB):
 	rhistory = []
+
+
 	for i in range(times):
 		try:
 			rhistory.append(play_game(game, rounds, stratA, stratB))
