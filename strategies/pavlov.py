@@ -11,10 +11,10 @@ class pavlov:
         def move(self, game, player, history):
                 if not history:
                         return "a"
-            else:
-                    if history[-1][0] == history[-1][1]:
-                            return "a"
-                    else:
-                            return "b"
+                else:
+                        if history[-1][0] == history[-1][1]:
+                                return "a"
+                        else:
+                                return "b"
 
 

@@ -15,14 +15,14 @@ class grimtrigger:
                 if not history: # first round cooperate
                         return "a"
 
-            else: 
+                else: 
 
-                    sumB = 0
-                    for run in history: # let's count how often opponent defected so far
-                            if run[1] == "b":
-                                    sumB =+ 1
+                        sumB = 0
+                        for run in history: # let's count how often opponent defected so far
+                                if run[1] == "b":
+                                        sumB =+ 1
 
-                    if sumB == 0: # if no defect, play a
-                            return "a"
-                    else: # if opponent ever defected, play b
-                            return "b"
+                        if sumB == 0: # if no defect, play a
+                                return "a"
+                        else: # if opponent ever defected, play b
+                                return "b"

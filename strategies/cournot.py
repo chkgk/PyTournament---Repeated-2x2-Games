@@ -29,9 +29,9 @@ class cournot:
                         if game == "pennies": # if we play matching pennies, the player number matters for the best response
                                 if player == 1:
                                         game = "pennies_p1"
-                            else:
-                                    game = "pennies_p2"	
-                    return best_response[game][history[-1][1]]
+                                else:
+                                        game = "pennies_p2"	
+                        return best_response[game][history[-1][1]]
 
 
 
