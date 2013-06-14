@@ -6,12 +6,12 @@ import random
 import tournament
 class chris:
 
-    def move(self, game, player, history):
-            # if history is empty, we are in the very first round. Let's cooperate!
-            if game == "prison": # in Prisoners' Dilemma I play imitation.
-                    if not history: # first round - randomize
-                            if random.randint(0,1) == 0: # play "a" or "b" with prob. 1/2
-                                    return "a"
+        def move(self, game, player, history):
+                # if history is empty, we are in the very first round. Let's cooperate!
+                if game == "prison": # in Prisoners' Dilemma I play imitation.
+                        if not history: # first round - randomize
+                                if random.randint(0,1) == 0: # play "a" or "b" with prob. 1/2
+                                        return "a"
                             else:
                                     return "b"
                     else: # determine payoffs of last round
@@ -27,10 +27,10 @@ class chris:
                                             best_key = i
 
                             return history[-1][best_key] # play the best strategy of last round
-            
-            elif game == "staghunt": # in staghunt I play grimtrigger
-                    if not history: # first round cooperate
-                            return "a"
+
+                elif game == "staghunt": # in staghunt I play grimtrigger
+                        if not history: # first round cooperate
+                                return "a"
 
                     else: 
 
@@ -43,9 +43,9 @@ class chris:
                                     return "a"
                             else: # if opponent ever defected, play b
                                     return "b"
-            elif game == "chicken": # in chicken i play cournot adjustment
+                elif game == "chicken": # in chicken i play cournot adjustment
 
-                    best_response = {"chicken":{"a":"b","b":"a"}}
+                        best_response = {"chicken":{"a":"b","b":"a"}}
 
                     if not history: # first round
                             if random.randint(0,1) == 0: # play "a" or "b" with prob. 1/2
@@ -55,9 +55,9 @@ class chris:
                     else: # subsequent rounds
                             return best_response[game][history[-1][1]]
 
-            elif game == "pennies":
-                    if not history:
-                            return "a";
+                elif game == "pennies":
+                        if not history:
+                                return "a";
                     else:
                             if player == 1: # when playing matching pennies, player number (1 = row, 2 = column) matters:
                                     if history[-1][1] == "a": # if I am player one, I want matching choices

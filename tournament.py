@@ -20,7 +20,7 @@ def determine_payoff(game, p1Act, p2Act):
 	return games[game][code]; # return corresponding payoff
 
 # function play_round
-# parameters: game(string), history(array), stratA(function), stratB(function)
+# parameters: game(string), history(array), strnatA(instance), stratB(instance)
 # returns: tuple(string, string)
 #
 def play_round(game, historyA, historyB, stratA, stratB):
@@ -67,12 +67,12 @@ def determine_rounds():
 # Returns an array with the history of all rounds. Each round is represented by
 #	a touple of two
 # strings containing the player moves.
-# parameters: game(string), rounds(int), stratA(function), stratB(function)
+# parameters: game(string), rounds(int), stratA(instance), stratB(instance)
 # returns: history object containing the respective history for playerX's point
 # 	of view
 #
 def play_game(game, rounds, stratA, stratB):
-	histA = []
+        histA = []
 	histB = []
 	if rounds == -1:
 		rounds = determine_rounds()
@@ -90,7 +90,7 @@ def play_game(game, rounds, stratA, stratB):
 # function play_repeatedly
 # Repeatedly plays the game and returns an array containing the history arrays 
 #	from play_game.
-# parameters: game(string), times(int), rounds(int), stratA(function), stratB(function)
+# parameters: game(string), times(int), rounds(int), stratA(instance), stratB(instance)
 # returns: array
 #
 def play_repeatedly(game, times, rounds, stratA, stratB):

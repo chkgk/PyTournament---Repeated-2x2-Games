@@ -10,10 +10,10 @@ import tournament
 #
 class grimtrigger:
 
-    def move(self, game, player, history):
+        def move(self, game, player, history):
 
-            if not history: # first round cooperate
-                    return "a"
+                if not history: # first round cooperate
+                        return "a"
 
             else: 
 

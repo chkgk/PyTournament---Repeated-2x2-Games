@@ -31,8 +31,8 @@
 #
 # Now take a look at a very basic structure of the function move
 class demo:
-    def move(self, game, player, history):
-            # if history is empty, we are in the very first round. Let's cooperate!
+        def move(self, game, player, history):
+                # if history is empty, we are in the very first round. Let's cooperate!
             if not history: 
                     return "a"
             else: # if we have a history, decide what to do based on which game we are playing:

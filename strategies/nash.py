@@ -10,9 +10,9 @@ import random
 
 class nash:
 
-    def move(self, game, player, history):
-            if game == "prison":
-                    # Nash EQ is to always defect.
+        def move(self, game, player, history):
+                if game == "prison":
+                        # Nash EQ is to always defect.
                     return "b"
 
             elif game == "staghunt": 
@@ -27,7 +27,7 @@ class nash:
                                     return "a"
                             else:
                                     return "b"
-            
+
             elif game == "chicken":
                     # again there are two pure eq strategies and one mixed strategy eq: play a with 1/2
                     eq_to_play = random.randint(1,3)

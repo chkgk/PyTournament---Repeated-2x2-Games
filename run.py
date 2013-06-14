@@ -11,7 +11,7 @@ import leaderboard
 # function load_strategies
 # parameters: path(string)
 # returns: dict(string, function), using the filename without .py as name and 
-#	maps that to the move function in that file
+#               produces an instance of the corresponding class	
 #
 def load_strategies(path):
 	strategies = {}
@@ -23,7 +23,9 @@ def load_strategies(path):
 			if name[0] == "." or split[1] != ".py":
 				pass
 			else:
+                                #loading the module
 				module = __import__(name)
+                                #producing an instance of the strategy class
                                 strategies.update({name: getattr(module,name)()})
 	return strategies 
 

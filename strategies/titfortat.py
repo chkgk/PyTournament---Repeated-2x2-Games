@@ -8,9 +8,9 @@
 #
 class titfortat:
 
-    def move(self, game, player, history):
-            if not history:
-                    return "a"
+        def move(self, game, player, history):
+                if not history:
+                        return "a"
             else:
                     if history[-1][1] == "a":
                             return "a"

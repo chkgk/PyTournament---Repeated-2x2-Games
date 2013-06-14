@@ -11,13 +11,13 @@ import tournament
 #
 class imitation:
 
-    def move(self, game, player, history):
+        def move(self, game, player, history):
 
-            if not history: # first round - randomize
-                            if random.randint(0,1) == 0: # play "a" or "b" with prob. 1/2
-                                    return "a"
-                            else:
-                                    return "b"
+                if not history: # first round - randomize
+                        if random.randint(0,1) == 0: # play "a" or "b" with prob. 1/2
+                                return "a"
+                        else:
+                                return "b"
             else: # determine payoffs of last round
                     last_payoffs = tournament.determine_payoff(game, history[-1][0], history[-1][1])
 
