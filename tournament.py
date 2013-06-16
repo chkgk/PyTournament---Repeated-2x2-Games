@@ -11,7 +11,7 @@ def determine_payoff(game, p1Act, p2Act):
 	if p2Act != "a" and p2Act != "b":
 		raise MoveException(2)
 	games = {
-		'prison':{'aa':(2,2), 'ab':(0,3), 'ba':(3,0), 'bb':(1,1)},
+		'prison':{'aa':(1,1), 'ab':(3,0), 'ba':(0,3), 'bb':(2,2)},
 		'staghunt':{'aa':(8,8), 'ab':(0,4), 'ba':(4,0), 'bb':(6,6)},
 		'chicken':{'aa':(2,2), 'ab':(1,3), 'ba':(3,1), 'bb':(0,0)},
 		'pennies':{'aa':(1,-1), 'ab':(-1,1), 'ba':(-1,1), 'bb':(1,-1)}
