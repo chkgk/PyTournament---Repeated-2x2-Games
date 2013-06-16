@@ -95,7 +95,6 @@ def plot_all(game, path, history):
                                 total_B = 0
                                 for n in range(rounds):
                                         payoff_hist_A[n] = payoff_hist_A[n] + this_iter[n][0]/float(iterations) 
-                        #payoff_hist_A[n], averaged payoffs for round[n] over all iterations for for A
                                         payoff_hist_B[n] = payoff_hist_B[n] + this_iter[n][1]/float(iterations) 
 
                                         total_A += this_iter[n][0]/float(iterations)
@@ -126,13 +125,6 @@ def plot_all(game, path, history):
                         plt.axis([0,rounds,-1,max(payoff_total_A[-1],payoff_total_B[-1])])
                         plt.savefig(plotname)
                         count += 1
-
-                        
-
-
-
-#        analysis = ga.prep_for_analysis(game, "allA", history)
-#        (po_history, po_stepsums, po_iter_sums, po_iter_avgs, avg_of_sums, avg_of_avgs) 
 
         if not os.path.exists(path_pr):
                 os.makedirs(path_pr)

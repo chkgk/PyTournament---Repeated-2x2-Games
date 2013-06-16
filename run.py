@@ -55,8 +55,7 @@ def prepare_parser(parser):
 		help="plot a single iteration of multiple stategies and save the graphs",\
 		nargs="*")
         parser.add_argument("-pall", "--plotall",\
-                help="plot and save average payoffs over iterations per round/total for all strategy combinations to destination (default ./plots/)", \
-                default="./plots/")
+                help="plot and save average payoffs over iterations per round/total for all strategy combinations to destination (default ./plots/)")
 
 def get_strategies(args):
 	strategies = load_strategies(args.strategies)
