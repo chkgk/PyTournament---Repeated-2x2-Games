@@ -131,15 +131,6 @@ def play_tournament(game, strategies, times, rounds):
 			if stratA == stratB:
 				break
 			try:
-                                if stratA == "testing":
-                                        print "-----"
-                                        print stratB
-                                        print "-----"
-                                elif stratB == "testing":
-                                        print "-----"
-                                        print stratA
-                                        print "-----"
-
 				rhistory = play_repeatedly(game, times, rounds, strategies[stratA], \
 					strategies[stratB])
 			except MoveException as e:
