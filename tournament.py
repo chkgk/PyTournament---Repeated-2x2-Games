@@ -20,7 +20,7 @@ def determine_payoff(game, p1Act, p2Act):
 	return games[game][code]; # return corresponding payoff
 
 # function play_round
-# parameters: game(string), history(array), stratA(function), stratB(function)
+# parameters: game(string), history(array), strnatA(instance), stratB(instance)
 # returns: tuple(string, string)
 #
 def play_round(game, historyA, historyB, stratA, stratB):
@@ -28,13 +28,13 @@ def play_round(game, historyA, historyB, stratA, stratB):
 	PLAYER_2 = 1
 	
 	try:
-		a = stratA(game, PLAYER_1, historyA)
+		a = stratA.move(game, PLAYER_1, historyA)
 	except Exception as e:
 		me = MoveException(1)
 		me.exception = e
 		raise me
 	try:
-		b = stratB(game, PLAYER_2, historyB)
+		b = stratB.move(game, PLAYER_2, historyB)
 	except Exception as e:
 		me = MoveException(2)
 		me.exception = e
@@ -67,12 +67,12 @@ def determine_rounds():
 # Returns an array with the history of all rounds. Each round is represented by
 #	a touple of two
 # strings containing the player moves.
-# parameters: game(string), rounds(int), stratA(function), stratB(function)
+# parameters: game(string), rounds(int), stratA(instance), stratB(instance)
 # returns: history object containing the respective history for playerX's point
 # 	of view
 #
 def play_game(game, rounds, stratA, stratB):
-	histA = []
+        histA = []
 	histB = []
 	if rounds == -1:
 		rounds = determine_rounds()
@@ -90,12 +90,22 @@ def play_game(game, rounds, stratA, stratB):
 # function play_repeatedly
 # Repeatedly plays the game and returns an array containing the history arrays 
 #	from play_game.
-# parameters: game(string), times(int), rounds(int), stratA(function), stratB(function)
+# parameters: game(string), times(int), rounds(int), stratA(instance), stratB(instance)
 # returns: array
 #
 def play_repeatedly(game, times, rounds, stratA, stratB):
 	rhistory = []
-	for i in range(times):
+
+        for i in range(times):
+                #create a new instance for each iteration
+                new_stratA = stratA.__class__()
+                del stratA
+                stratA = new_stratA
+
+                new_stratB = stratB.__class__()
+                del stratB
+                stratB = new_stratB
+
 		try:
 			rhistory.append(play_game(game, rounds, stratA, stratB))
 		except MoveException as e:

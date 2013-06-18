@@ -11,7 +11,7 @@ import leaderboard
 # function load_strategies
 # parameters: path(string)
 # returns: dict(string, function), using the filename without .py as name and 
-#	maps that to the move function in that file
+#               produces an instance of the corresponding class	
 #
 def load_strategies(path):
 	strategies = {}
@@ -23,7 +23,10 @@ def load_strategies(path):
 			if name[0] == "." or split[1] != ".py":
 				pass
 			else:
-				strategies.update({name: __import__(name).move})
+                                #loading the module
+				module = __import__(name)
+                                #producing an instance of the strategy class
+                                strategies.update({name: getattr(module,name)()})
 	return strategies 
 
 def prepare_parser(parser):
@@ -51,6 +54,8 @@ def prepare_parser(parser):
 	parser.add_argument("-pm", "--plotmulti", \
 		help="plot a single iteration of multiple stategies and save the graphs",\
 		nargs="*")
+        parser.add_argument("-pall", "--plotall",\
+                help="plot and save average payoffs over iterations per round/total for all strategy combinations to destination (default ./plots/)")
 
 def get_strategies(args):
 	strategies = load_strategies(args.strategies)
@@ -133,3 +138,26 @@ if __name__ == "__main__":
 			# iterations go from 0-99 but users will input 1-100
 			#game_analyser.save_figure("test.png")
 			plotter.show_figure()
+
+	if args.plotall:
+		try:
+			plotter = __import__("plotter")
+		except ImportError:
+			print "NumPy and MatPlotLib are required for these functions."
+			sys.exit(1)
+                
+                if args.plotall[-1] == '/':
+                        path = args.plotall
+                else:
+                        path = args.plotall+"/"
+
+                print "Plotting average payoffs over iterations per round/total for all strategy combinations."
+                print "Results are stored in: " + str(path)
+
+                plotter.plot_all(args.game, path, tournament_results)
+#		plotter.prepare_figure(args.game)
+#		if plotter.plot_game(args.game,args.plot[1],args.plot[2], \
+#			int(args.plot[0])-1, tournament_results): 
+#			# iterations go from 0-99 but users will input 1-100
+#			#game_analyser.save_figure("test.png")
+#			plotter.show_figure()
