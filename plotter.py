@@ -69,7 +69,6 @@ def plot_all(game, path, history):
         path_pr = path + game + "/per_round/"
         path_total = path + game + "/total/"
 
-
         if not os.path.exists(path_pr):
                 os.makedirs(path_pr)
 
@@ -131,4 +130,5 @@ def plot_all(game, path, history):
                         plt.axis([0,rounds,-1,max(payoff_total_A[-1],payoff_total_B[-1])])
                         plt.savefig(plotname)
                         count += 1
+
                 

@@ -42,10 +42,7 @@ def get_round_number(histories):
 def get_leaderboard(game, histories):
 	res = ""
 	sums = calc_sums(game, histories)
-	if game == "prison":
-		rev = False 
-	else:
-		rev = True
+	rev = True
 	rounds = get_round_number(histories)
 	length = len(max(sums.keys(), key=lambda i:len(i))) + 1
 	for a in sorted(sums.keys(), key=lambda i:sums[i], reverse=rev):
