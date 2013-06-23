@@ -18,9 +18,9 @@ class chris:
                                 last_payoffs = tournament.determine_payoff(game, history[-1][0], history[-1][1])
 
                                 if game == "prison": # for prisoners dilemma, lower values are better!
-                                        best_result = min(last_payoffs)
+                                        best_result = max(last_payoffs) # min for inversed payoffs
                                 else:
-                                        best_result = max(last_payoffs)
+                                        best_result = min(last_payoffs) # max for inversed payoffs
 
                         for i in range(len(last_payoffs)): # look up which player got the best payoff this round
                                 if last_payoffs[i] == best_result:

@@ -9,25 +9,33 @@ import tournament as tm
 import leaderboard
 
 # function load_strategies
-# parameters: path(string)
+# parameters: path(string), allowed(list)
 # returns: dict(string, function), using the filename without .py as name and 
 #               produces an instance of the corresponding class	
+#			excludes all which are not in the allowed list.
 #
-def load_strategies(path):
+
+def load_strategies(path, allowed):
 	strategies = {}
+	available = get_strategy_list(path)
+	for strategy in available:
+		if strategy[0] in allowed and strategy[1] == ".py":
+			#loading the module
+			module = __import__(strategy[0])
+			#producing an instance of the strategy class
+			strategies.update({strategy[0]: getattr(module,strategy[0])()})
+	return strategies 
+
+def get_strategy_list(path):
+	strategies = []
+	split = []
 	sys.path.append(os.path.join(path))
 	for root, dirs, files in os.walk(path):                                             
 		for filename in files:
 			split = os.path.splitext(filename)
-			name = split[0]
-			if name[0] == "." or split[1] != ".py":
-				pass
-			else:
-                                #loading the module
-				module = __import__(name)
-                                #producing an instance of the strategy class
-                                strategies.update({name: getattr(module,name)()})
-	return strategies 
+			if split[1] == ".py" and split[0][0] != ".":
+				strategies.append(split)
+	return strategies
 
 def prepare_parser(parser):
 	game_names = ["prison", "staghunt", "chicken", "pennies"]
@@ -54,11 +62,15 @@ def prepare_parser(parser):
 	parser.add_argument("-pm", "--plotmulti", \
 		help="plot a single iteration of multiple stategies and save the graphs",\
 		nargs="*")
-        parser.add_argument("-pall", "--plotall",\
-                help="plot and save average payoffs over iterations per round/total for all strategy combinations to destination (default ./plots/)")
+	parser.add_argument("-pall", "--plotall", \
+		help="plot and save average payoffs over iterations per round/total for all strategy combinations to destination (default ./plots/)")
+	parser.add_argument("-sl", "--strategylist", \
+		help="supply a list of strategies to be included in the tournament", \
+		nargs="*")
 
-def get_strategies(args):
-	strategies = load_strategies(args.strategies)
+
+def get_strategies(args, allowed):
+	strategies = load_strategies(args.strategies, allowed)
 	if args.focus:
 		new_strategies = {}
 		for i in range(1, 3):
@@ -78,7 +90,15 @@ if __name__ == "__main__":
 	prepare_parser(parser)
 	args = parser.parse_args()
 	
-	strategies = get_strategies(args)
+
+	if args.strategylist: # if strategylist is given, only allow thos strategies for the tournament
+		strategies = get_strategies(args, args.strategylist)
+	else: # allow all strategies to enter the tournament
+		allowed = []
+		for name in get_strategy_list(args.strategies):
+			allowed.append(name[0])
+		strategies = get_strategies(args, allowed)
+
 	os.system('clear')
 
 	print "Running " + str(args.iterations)+ \
@@ -145,16 +165,15 @@ if __name__ == "__main__":
 		except ImportError:
 			print "NumPy and MatPlotLib are required for these functions."
 			sys.exit(1)
-                
-                if args.plotall[-1] == '/':
-                        path = args.plotall
-                else:
-                        path = args.plotall+"/"
+		if args.plotall[-1] == '/':
+			path = args.plotall
+		else:
+			path = args.plotall+"/"
 
-                print "Plotting average payoffs over iterations per round/total for all strategy combinations."
-                print "Results are stored in: " + str(path)
+		print "Plotting average payoffs over iterations per round/total for all strategy combinations."
+		print "Results are stored in: " + str(path)
 
-                plotter.plot_all(args.game, path, tournament_results)
+		plotter.plot_all(args.game, path, tournament_results)
 #		plotter.prepare_figure(args.game)
 #		if plotter.plot_game(args.game,args.plot[1],args.plot[2], \
 #			int(args.plot[0])-1, tournament_results): 

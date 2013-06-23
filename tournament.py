@@ -96,16 +96,16 @@ def play_game(game, rounds, stratA, stratB):
 def play_repeatedly(game, times, rounds, stratA, stratB):
 	rhistory = []
 
-	for i in range(times):
-		#create a new instance for each iteration
-		new_stratA = stratA.__class__()
-		del stratA
-		stratA = new_stratA
+        for i in range(times):
+                #create a new instance for each iteration
+                new_stratA = stratA.__class__()
+                del stratA
+                stratA = new_stratA
 
-		new_stratB = stratB.__class__()
-		del stratB
-		stratB = new_stratB
-		
+                new_stratB = stratB.__class__()
+                del stratB
+                stratB = new_stratB
+
 		try:
 			rhistory.append(play_game(game, rounds, stratA, stratB))
 		except MoveException as e:
