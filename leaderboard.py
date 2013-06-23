@@ -46,7 +46,8 @@ def get_leaderboard(game, histories):
 	res = ""
 	sums = calc_sums(game, histories)
 	if game == "prison":
-		rev = False 
+		rev = True
+		#rev = False 
 	else:
 		rev = True
 	rounds = get_round_number(histories)
@@ -55,7 +56,7 @@ def get_leaderboard(game, histories):
 		b = a + ":"
 		while len(b) < length:
 			b += " "
-		res += b + " " + str(sums[a]) + " | " + str(round(sums[a]/float(rounds), 1)) + "\n"
+		res += b + " " + str(sums[a]) + " | " + str(round(sums[a]/float(rounds), 2)) + "\n"
 	return res 
 
 # function make_payoff_history
