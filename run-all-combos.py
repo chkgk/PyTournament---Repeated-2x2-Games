@@ -236,9 +236,9 @@ if __name__ == "__main__":
                 #plot average rank
                 plt.figure(fig_number)
                 plotname = path_rank+ANALYSE+"_vs_"+s+".pdf"
-                title = "Average Rank: "+ANALYSE+" vs "+s
+                title = "Average Rank of "+ANALYSE+" vs "+s
                 plt.plot(range(poolsize+1),vs_rank[s],label=ANALYSE)
-                plt.legend(loc="upper left")
+                #plt.legend(loc="upper left")
                 plt.title(title)
                 plt.axis([0,poolsize,poolsize+1,0])
                 plt.xlabel("# of "+s+" in pool")
@@ -246,13 +246,12 @@ if __name__ == "__main__":
                 plt.savefig(plotname)
                 fig_number += 1
 
-
                 #plot average relative Payoff
                 plt.figure(fig_number)
                 plotname = path_relP+ANALYSE+"_vs_"+s+".pdf"
-                title = "Average relative Payoff: "+ANALYSE+" vs "+s
-                plt.plot(range(poolsize+1),vs_rPayoff[s],label=s)
-                plt.legend(loc="upper left")
+                title = "Average relative Payoff of "+ANALYSE+" vs "+s
+                plt.plot(range(poolsize+1),vs_rPayoff[s],label=ANALYSE)
+                #plt.legend(loc="upper left")
                 plt.title(title)
                 plt.axis([0,poolsize,0,0.3])
                 plt.xlabel("# of "+s+" in pool")
