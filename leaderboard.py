@@ -60,7 +60,7 @@ def get_leaderboard(game, histories):
 # Returns sorted leaderbard data from game and histories object.
 # normalized payoff is the payoff share of total payoff the strategy gets
 #
-# return [total payoff, normalized payoff, rank]
+# return {strat: [total payoff, normalized payoff, rank]}
 #
 def get_lb_data(game, histories):
 	sums = calc_sums(game, histories)

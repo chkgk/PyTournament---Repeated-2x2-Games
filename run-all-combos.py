@@ -10,12 +10,21 @@ import tournament as tm
 import leaderboard
 import itertools
 
+import matplotlib.pyplot as plt
 # function load_strategies
 # parameters: path(string), allowed(list)
 # returns: dict(string, function), using the filename without .py as name and 
 #               produces an instance of the corresponding class	
 #			excludes all which are not in the allowed list.
 #
+
+
+#-------------
+#Change strategy under test here!
+#-------------
+ANALYSE = "testing"
+
+
 
 def load_strategies(path, allowed):
 	strategies = {}
@@ -93,10 +102,6 @@ def get_rounds(i):
 		return str(i)
 
 
-def n_over_k(n,k):
-        return int(factorial(n)/float(factorial(n-k)*factorial(k)))
-
-
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	prepare_parser(parser)
@@ -105,11 +110,11 @@ if __name__ == "__main__":
 
 	if args.strategylist: # if strategylist is given, only allow those strategies for the tournament
 		allowed = args.strategylist
-                allowed.remove("testing")
+                allowed.remove(ANALYSE)
 	else: # allow all strategies to enter the tournament
 		allowed = []
 		for name in get_strategy_list(args.strategies):
-                        if name != "testing":
+                        if name != ANALYSE:
                                 allowed.append(name[0])
 	
 	if args.poolsize: #fixed number of strategies who are playing the tourny
@@ -127,7 +132,7 @@ if __name__ == "__main__":
         
         for i in range(int(pow(np+1,ns))):
                 sl = {}
-                sl.update({"testing": 1})
+                sl.update({ANALYSE: 1})
 
                 j = i
                 c = 1
@@ -145,12 +150,28 @@ if __name__ == "__main__":
                         all_strategy_lists.append(sl)
 
 
-	# Let's create a set which contains all possible strategy combinations from those allowed in the tournament
-	allcombinations = []
-
 	#for L in range(2, len(allowed)+1):
 		#for subset in itertools.combinations(allowed, L):
 			#allcombinations.append(subset)
+
+        vs_rank = {}
+        #relative payoff
+        vs_rPayoff = {}
+        #absolute payoff
+        vs_aPayoff = {}
+        vs_count = {}
+
+        #produce empty dicts
+        for s in allowed:
+                vs_rank.update({s: []})
+                vs_rPayoff.update({s: []})
+                vs_aPayoff.update({s: []})
+                vs_count.update({s: []})
+                for i in range(poolsize+1):
+                        vs_rank[s].append(0)
+                        vs_rPayoff[s].append(0)
+                        vs_aPayoff[s].append(0)
+                        vs_count[s].append(0)
 
 	# now we run a separate tournament for each possible combination of strategies generated above
 	for strategycombo in all_strategy_lists:
@@ -170,68 +191,71 @@ if __name__ == "__main__":
 
 		print leaderboard.get_leaderboard(args.game, tournament_results)
 
-	# if args.analyse:
-	# 	try:
-	# 		game_analyser = __import__("game_analyser")
-	# 	except ImportError:
-	# 		print "NumPy and MatPlotLib are required for these functions."
-	# 		sys.exit(1)
-	# 	print "Presenting Analysis for "+args.analyse+":\n"
-	# 	preppedRes = game_analyser.prep_for_analysis(args.game, args.analyse, tournament_results)
-	# 	print game_analyser.analyse_strategy(args.game, args.analyse, preppedRes)
+                #get important data
+                lb_data = leaderboard.get_lb_data(args.game, tournament_results)
+                
+                #produce counting list
+                count_strat = {}
+                for s in allowed:
+                        count_strat.update({s: 0})
 
-	# if args.plotmulti:
-	# 	try:
-	# 		plotter = __import__("plotter")
-	# 	except ImportError:
-	# 		print "NumPy and MatPlotLib are required for these functions."
-	# 		sys.exit(1)
+                for s in lb_data.keys():
+                        for t in allowed:
+                                if s[:-1] == t:
+                                        count_strat[t] += 1
 
-	# 	strats = ""
-	# 	for strategy in args.plotmulti[2:]:
-	# 		strats += strategy + ", "
 
-	# 	print "Saving plots for " + args.plotmulti[1] + " vs. " + strats[:-2]
-	# 	plotter.prepare_figure(args.game)
-	# 	plotter.plot_multi(args.game,args.plotmulti[1],args.plotmulti[2:], \
-	# 			int(args.plotmulti[0])-1, tournament_results)
-	# 	print "done."
-	# 	print ""
+                #produce testing vs strategy dicts
+                for s in allowed:
+                        c = count_strat[s]
+                        vs_aPayoff[s][c] += lb_data[ANALYSE+"0"][0]
+                        vs_rPayoff[s][c] += lb_data[ANALYSE+"0"][1]
+                        vs_rank[s][c] += lb_data[ANALYSE+"0"][2]
+                        vs_count[s][c] += 1
+                
+        fig_number = 1
 
-	# if args.plot:
-	# 	try:
-	# 		plotter = __import__("plotter")
-	# 	except ImportError:
-	# 		print "NumPy and MatPlotLib are required for these functions."
-	# 		sys.exit(1)
+        #get average and print
+        for s in allowed:
+                for i in range(poolsize+1):
+                        vs_aPayoff[s][i] = vs_aPayoff[s][i]/float(vs_count[s][i])
+                        vs_rPayoff[s][i] = vs_rPayoff[s][i]/float(vs_count[s][i])
+                        vs_rank[s][i] = vs_rank[s][i]/float(vs_count[s][i])
 
-	# 	print "Plotting graphs of iteration " + args.plot[0] + " of "+ \
-	# 		args.plot[1] +" vs. "+args.plot[2]
-	# 	plotter.prepare_figure(args.game)
-	# 	if plotter.plot_game(args.game,args.plot[1],args.plot[2], \
-	# 		int(args.plot[0])-1, tournament_results): 
-	# 		# iterations go from 0-99 but users will input 1-100
-	# 		#game_analyser.save_figure("test.png")
-	# 		plotter.show_figure()
 
-	# if args.plotall:
-	# 	try:
-	# 		plotter = __import__("plotter")
-	# 	except ImportError:
-	# 		print "NumPy and MatPlotLib are required for these functions."
-	# 		sys.exit(1)
-	# 	if args.plotall[-1] == '/':
-	# 		path = args.plotall
-	# 	else:
-	# 		path = args.plotall+"/"
+                path = "./plots_combos/"
+                path_rank = path + args.game + "/rank/"
+                path_relP = path + args.game + "/relative_Payoff/"
 
-	# 	print "Plotting average payoffs over iterations per round/total for all strategy combinations."
-	# 	print "Results are stored in: " + str(path)
+                if not os.path.exists(path_rank):
+                        os.makedirs(path_rank)
 
-	# 	plotter.plot_all(args.game, path, tournament_results)
-#		plotter.prepare_figure(args.game)
-#		if plotter.plot_game(args.game,args.plot[1],args.plot[2], \
-#			int(args.plot[0])-1, tournament_results): 
-#			# iterations go from 0-99 but users will input 1-100
-#			#game_analyser.save_figure("test.png")
-#			plotter.show_figure()
+                if not os.path.exists(path_relP):
+                        os.makedirs(path_relP)
+
+                #plot average rank
+                plt.figure(fig_number)
+                plotname = path_rank+ANALYSE+"_vs_"+s+".pdf"
+                title = "Average Rank: "+ANALYSE+" vs "+s
+                plt.plot(range(poolsize+1),vs_rank[s],label=ANALYSE)
+                plt.legend(loc="upper left")
+                plt.title(title)
+                plt.axis([0,poolsize,poolsize+1,0])
+                plt.xlabel("# of "+s+" in pool")
+                plt.ylabel("rank")
+                plt.savefig(plotname)
+                fig_number += 1
+
+
+                #plot average relative Payoff
+                plt.figure(fig_number)
+                plotname = path_relP+ANALYSE+"_vs_"+s+".pdf"
+                title = "Average relative Payoff: "+ANALYSE+" vs "+s
+                plt.plot(range(poolsize+1),vs_rPayoff[s],label=s)
+                plt.legend(loc="upper left")
+                plt.title(title)
+                plt.axis([0,poolsize,0,0.3])
+                plt.xlabel("# of "+s+" in pool")
+                plt.ylabel("relative Payoff [%]")
+                plt.savefig(plotname)
+                fig_number += 1
