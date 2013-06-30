@@ -8,25 +8,15 @@ class chris:
 
         def move(self, game, player, history):
                 # if history is empty, we are in the very first round. Let's cooperate!
-                if game == "prison": # in Prisoners' Dilemma I play imitation.
-                        if not history: # first round - randomize
+                if game == "prison": # in Prisoners' Dilemma I play cournot.
+                        best_response = {"prison":{"a":"b","b":"b"}}
+                        if not history: # first round
                                 if random.randint(0,1) == 0: # play "a" or "b" with prob. 1/2
                                         return "a"
                                 else:
                                         return "b"
-                        else: # determine payoffs of last round
-                                last_payoffs = tournament.determine_payoff(game, history[-1][0], history[-1][1])
-
-                                if game == "prison": # for prisoners dilemma, lower values are better!
-                                        best_result = min(last_payoffs)
-                                else:
-                                        best_result = max(last_payoffs)
-
-                        for i in range(len(last_payoffs)): # look up which player got the best payoff this round
-                                if last_payoffs[i] == best_result:
-                                        best_key = i
-
-                                        return history[-1][best_key] # play the best strategy of last round
+                        else: # subsequent rounds
+                                return best_response[game][history[-1][1]]
 
                 elif game == "staghunt": # in staghunt I play grimtrigger
                         if not history: # first round cooperate
