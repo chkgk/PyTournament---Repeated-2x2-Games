@@ -107,6 +107,16 @@ def plot_all(game, path, history):
                                         payoff_total_A[n] += total_A
                                         payoff_total_B[n] += total_B
 
+
+                        if game == "prison":
+                                maxPayoff = 3
+                        elif game == "staghunt":
+                                maxPayoff = 8
+                        if game == "chicken":
+                                maxPayoff = 3
+                        if game == "pennies":
+                                maxPayoff = 1
+
                         #plot average
                         plt.figure(count)
                         plotname = path_pr+i+"_vs_"+j+".pdf"
@@ -115,7 +125,7 @@ def plot_all(game, path, history):
                         plt.plot(range(rounds),payoff_hist_B,label=j)
                         plt.legend(loc="upper left")
                         plt.title(title)
-                        plt.axis([0,rounds,-1,4])
+                        plt.axis([0,rounds,-1,maxPayoff+1])
                         plt.savefig(plotname)
                         count += 1
 

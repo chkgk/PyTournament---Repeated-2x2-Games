@@ -55,6 +55,42 @@ def get_leaderboard(game, histories):
 		res += b + " " + str(sums[a]) + " | " + str(round(sums[a]/float(rounds), 1)) + "\n"
 	return res 
 
+# function get_lb_data
+#
+# Returns sorted leaderbard data from game and histories object.
+# normalized payoff is the payoff share of total payoff the strategy gets
+#
+# return {strat: [total payoff, normalized payoff, rank]}
+#
+def get_lb_data(game, histories):
+	sums = calc_sums(game, histories)
+
+        #for normalization
+        total = 0
+        for s in sums:
+                total += sums[s]
+
+	rev = True
+        res_all = {}
+
+        rank = 1
+	for s in sorted(sums.keys(), key=lambda i:sums[i], reverse=rev):
+                res = []
+                this_rank = rank
+                #if two strategies have the same payoff, they get the same rank
+                if rank != 1:
+                        if sums[s] == sums[last_s]:
+                                this_rank = res_all[last_s][2]
+                res.append(sums[s])
+                res.append(sums[s]/float(total))
+                res.append(this_rank)
+                res_all.update({s: res})
+                rank += 1
+                last_s = s
+        return res_all
+
+
+
 # function make_payoff_history
 #
 # transforms a history of choices into a history of payoffs
