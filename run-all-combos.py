@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 #-------------
 #Change strategy under test here!
 #-------------
-ANALYSE = "testing"
+ANALYSE = "allA"
 
 
 
@@ -219,7 +219,7 @@ if __name__ == "__main__":
         for s in allowed:
                 for i in range(poolsize+1):
                         vs_aPayoff[s][i] = vs_aPayoff[s][i]/float(vs_count[s][i])
-                        vs_rPayoff[s][i] = vs_rPayoff[s][i]/float(vs_count[s][i])
+                        vs_rPayoff[s][i] = vs_rPayoff[s][i]/float(vs_count[s][i])*float(100)
                         vs_rank[s][i] = vs_rank[s][i]/float(vs_count[s][i])
 
 
@@ -245,15 +245,19 @@ if __name__ == "__main__":
                 plt.ylabel("rank")
                 plt.savefig(plotname)
                 fig_number += 1
-
+                
+                equal_share = []
+                for i in range(poolsize+1):
+                        equal_share.append(1.0/float(poolsize+1)*100)
                 #plot average relative Payoff
                 plt.figure(fig_number)
-                plotname = path_relP+ANALYSE+"_vs_"+s+".pdf"
+                plotname = path_relP+"rel_"+ANALYSE+"_vs_"+s+".pdf"
                 title = "Average relative Payoff of "+ANALYSE+" vs "+s
                 plt.plot(range(poolsize+1),vs_rPayoff[s],label=ANALYSE)
+                plt.plot(range(poolsize+1),equal_share,label="equal share")
                 #plt.legend(loc="upper left")
                 plt.title(title)
-                plt.axis([0,poolsize,0,0.3])
+                plt.axis([0,poolsize,0,30])
                 plt.xlabel("# of "+s+" in pool")
                 plt.ylabel("relative Payoff [%]")
                 plt.savefig(plotname)
