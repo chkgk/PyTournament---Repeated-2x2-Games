@@ -26,9 +26,6 @@ class testing:
 
         TESTING_ROUND = 10
         
-        #number of rejected strategies
-        rejected = 0
-
         belief = {}
 
         observed_A = 0
@@ -59,8 +56,6 @@ class testing:
                 self.belief.update({"nash": 1/float(self.NOS)})
                 self.belief.update({"tftt": 1/float(self.NOS)})
 
-                self.rejected = 0
-
                 self.observed_A = 0
                 self.observed_B = 0
 
@@ -69,6 +64,10 @@ class testing:
 
                 self.always_B = False
 
+                self.always_A = False
+                self.always_AB = False
+
+                self.detected = False
 
         def normalize(self):
                 s = 0
@@ -103,28 +102,29 @@ class testing:
 
         def move(self, game, player, history):
                 
-                if game == "prison": #{{{
-                        #first turn cooperate
-                        if not history:
-                                self.reset()
-                                return self.play("a")
+                #first turn cooperate
+                if not history:
+                        self.reset()
+                        return self.play("a")
 
+                else:
+                        last_i = history[-1][0]
+                        last_he = history[-1][1]
+                        if last_he == "a":
+                                self.observed_A += 1
                         else:
-                                last_i = history[-1][0]
-                                last_he = history[-1][1]
-                                if last_he == "a":
-                                        self.observed_A += 1
-                                else:
-                                        self.observed_B += 1
+                                self.observed_B += 1
 
-                        #round
-                        r = len(history)
-                        if False:
-                                print "Round: " + str(r-1)
-                                for i in self.belief.keys():
-                                       print i + ": " + str(self.belief[i])
-                                print "-> ("+last_i + "," + last_he + ")"
-                                print ""
+                #round
+                r = len(history)
+                if False:
+                        print "Round: " + str(r-1)
+                        for i in self.belief.keys():
+                               print i + ": " + str(self.belief[i])
+                        print "-> ("+last_i + "," + last_he + ")"
+                        print ""
+
+                if game == "prison": #{{{
 
                         #first round
                         if r == 1:
@@ -327,5 +327,29 @@ class testing:
                                 return self.play("a")
                         else:
                                 return self.play("b")
+
+                if game == "staghunt":
+                        if r == 1:
+                                #zweite Runde a ueberzeugt cournot (a,a) zu spielen
+                                # -> Vorteil ueber grimtrigger
+                                return self.play("a")
+                        else:
+                                if not self.detected and self.observed_B <= 1:
+                                        self.always_A = True
+                                else:
+                                        self.always_B = True
+                                        self.detected = True
+
+                                if self.always_B:
+                                        return self.play("b")
+                                elif self.always_A:
+                                        return self.play("a")
+                                else:
+                                        if history[-1][1] == "a":
+                                                return self.play("a")
+                                        else:
+                                                return self.play("b")
+
+                        #return "a"
 
 
