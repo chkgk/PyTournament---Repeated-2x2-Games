@@ -1,3 +1,11 @@
+# strategy: ZD
+#
+# returns: "a" or "b" (string)
+#
+# This function implements a Zero Determinance strategy
+# Currently only works in Prisoners' Dilemmas!
+#
+
 import sys, os
 sys.path.append(os.path.abspath('../tournament.py'))
 #sys.path.append('~/Dokumente/PyTournament---Repeated-2x2-Games/tournament.py')

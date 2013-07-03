@@ -1,4 +1,4 @@
-# function titfortat
+# strategy titfortat
 # parameters: game (string), history (list of tupels)
 # returns: "a" or "b" (string)
 #

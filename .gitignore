@@ -17,3 +17,5 @@ strategies/.svn/entries
 strategies/.svn/dir-prop-base
 
 strategies/.svn/all-wcprops
+
+*.py~

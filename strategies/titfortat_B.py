@@ -1,5 +1,13 @@
+# strategy titfortat_B
+#
+# returns: "a" or "b" (string)
+#
+# This function implements a version of tit-for-tat
+# which also starts with "a" but retaliates a defection
+# of the other player only with probability 1/4
+
+
 import random
-#same as titfortat but plays b with a probability
 class titfortat_B:
 
         def move(self, game, player, history):

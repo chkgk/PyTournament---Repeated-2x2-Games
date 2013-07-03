@@ -1,8 +1,8 @@
-# function pavlov
+# strategy pavlov
 # parameters: game (string), history (list of tupels)
 # returns: "a" or "b" (string)
 #
-# This function implements the strategy pavlov
+# This function implements the strategy pavlov (win-stay loose-shift)
 # which is to cooperate only if both players chose the same action
 # in the last round and to defect otherwise.
 #

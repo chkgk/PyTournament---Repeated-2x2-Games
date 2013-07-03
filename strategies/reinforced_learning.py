@@ -1,3 +1,13 @@
+# Strategy: reinforced_learning
+# parameters: game (string), player (int), history (list of tupels)
+# returns: "a" or "b" (string)
+#
+# This function implements a reinforced learning strategy.
+# First, each strategy is chosen with equal probability, based on identical reinforcement levels. 
+# In subsequent rounds, reinforcement levels are adjusted according to outcomes
+# and new probabilities for each pure strategy are calculated based
+# on updated reinforcement levels.
+#
 import sys, os
 sys.path.append(os.path.abspath('../tournament.py'))
 import random
@@ -31,7 +41,7 @@ class reinforced_learning:
 					return "b"
 		
 		
-			# adjust reinforcfement levels
+			# adjust reinforcement levels
 			if history[-1][0] == "a":
 				self.reflvl_a = self.reflvl_a + tournament.determine_payoff("prison", "a", history[-1][1])[0]
 		

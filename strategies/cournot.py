@@ -5,7 +5,8 @@ import random
 # returns: "a" or "b" (string)
 #
 # This function implements so called cournot adjustment.
-# First, each strategy is chosen with equal probability. In subsequent rounds, the best response to the opponent's 
+# First, each strategy is chosen with equal probability. 
+# In subsequent rounds, the best response to the opponent's 
 # strategy in the previous round is played.
 #
 class cournot:
