@@ -12,7 +12,7 @@
 
 
 import random
-class titfortat_B:
+class feld:
 
         def move(self, game, player, history):
                 if not history:
